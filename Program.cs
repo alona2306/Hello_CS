@@ -10,14 +10,19 @@ namespace Hello_CS
 {
     class Program
     {
+        struct sFood
+        {
+            string strFoodName;
+            uint uiNDB;
+        }
+
         static void Main(string[] args)
         {
-            var a = new Url(@"https://ndb.nal.usda.gov/ndb/foods");
-
             var client = new WebClient();
             var downloadString = client.DownloadString("https://ndb.nal.usda.gov/ndb/foods");
 
-            Console.WriteLine();
+            Console.WriteLine(downloadString);
+            Console.ReadKey(); // wait for key-press to prevent windows from closing
         }
     }
 }
