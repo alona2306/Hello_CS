@@ -19,6 +19,7 @@ namespace Hello_CS
 
         static void Main(string[] args)
         {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
             //var client = new WebClient();
             //var downloadString = client.DownloadString("https://ndb.nal.usda.gov/ndb/foods");
 
@@ -31,20 +32,24 @@ namespace Hello_CS
             // Targets a specific node
             var foodTable = document.DocumentNode.SelectNodes("//table")[1];
 
-            char[] charsToTrim = {' ', '\t', '\n'};
+            char[] charsToTrim = {' ', '\t', '\n'}; 
            
             foreach (var row in foodTable.SelectNodes("//tr"))
             {
+                //th - columns in header row in our case are optional? (columns=cells in regular table)
                 var columns = row.SelectNodes("th|td");
 
                 int id;
+                //The TryParse method is like the Parse method, except the TryParse method does not throw an exception if the conversion fails
+                //The Trim method removes from the current string all leading and trailing chars
+                //out - by reference initialized before usage
                 if (!int.TryParse(columns[0].InnerText.Trim(charsToTrim), out id)) continue;
               
-                var detailsUrl = columns[0].Element("a").GetAttributeValue("href", "unknown");
+                var detailsUrl = string.Concat("https://ndb.nal.usda.gov", columns[0].Element("a").GetAttributeValue("href", "unknown"));
                 var description = columns[1].InnerText.Trim(charsToTrim);
                 var foodgroup = columns[2].InnerText.Trim(charsToTrim);
 
-                Console.WriteLine(string.Format("ID: {0}\tDescription: {1}\tFood group: {2}\nUrl: https://ndb.nal.usda.gov{3}\n\n", id, description, foodgroup, detailsUrl));
+                Console.WriteLine(string.Format("ID: {0}\tDescription: {1}\tFood group: {2}\nUrl: {3}\n\n", id, description, foodgroup, detailsUrl));
             }
 
 
