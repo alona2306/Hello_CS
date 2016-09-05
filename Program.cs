@@ -13,13 +13,15 @@ namespace Hello_CS
     {
         struct sFood
         {
-            string strFoodName;
-            uint uiNDB;
+            string foodName;
+            string foodGroup;
+            string url;
+            // more info
         }
 
         static void Main(string[] args)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            Dictionary<string, sFood> foodDictionary = new Dictionary<string, sFood>();
             //var client = new WebClient();
             //var downloadString = client.DownloadString("https://ndb.nal.usda.gov/ndb/foods");
 
@@ -27,8 +29,9 @@ namespace Hello_CS
             var htmlWeb = new HtmlWeb();
 
             // Creates an HtmlDocument object from an URL
-            var document = htmlWeb.Load("https://ndb.nal.usda.gov/ndb/foods?format=&count=&max=10000&sort=&fgcd=&manu=&lfacet=&qlookup=&offset=0&order=desc");
-            
+            //var document = htmlWeb.Load("https://ndb.nal.usda.gov/ndb/foods?format=&count=&max=10000&sort=&fgcd=&manu=&lfacet=&qlookup=&offset=0&order=desc");
+            var document = htmlWeb.Load("https://ndb.nal.usda.gov/ndb/foods?format=&count=&max=10&sort=&fgcd=&manu=&lfacet=&qlookup=&offset=0&order=desc");
+
             // Targets a specific node
             var foodTable = document.DocumentNode.SelectNodes("//table")[1];
 
@@ -50,11 +53,12 @@ namespace Hello_CS
                 var foodgroup = columns[2].InnerText.Trim(charsToTrim);
 
                 Console.WriteLine(string.Format("ID: {0}\tDescription: {1}\tFood group: {2}\nUrl: {3}\n\n", id, description, foodgroup, detailsUrl));
+
+                // add food to dictionary
             }
 
+            // save dictionary to file
 
-
-            //Console.WriteLine(downloadString);
             Console.ReadKey(); // wait for key-press to prevent windows from closing
         }
     }
